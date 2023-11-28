@@ -1,0 +1,15 @@
+{
+  "name": "poc_backend",
+  "version": "1.0.0",
+  "description": "poc del backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest",
+    "build": "tsc"
+  },
+  "author": "cybersorcerers <cybersorcerers23@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.3.2"
+  }
+}
