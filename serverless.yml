@@ -10,8 +10,15 @@ provider:
     role:
       statements:
         - Effect: Allow
-          Action: "bedrock:InvokeModel"
+          Action:
+            - "bedrock:InvokeModel"
+            - cognito-idp:AdminInitiateAuth
+            - cognito-idp:AdminCreateUser
+            - cognito-idp:AdminSetUserPassword
           Resource: "*"
+  environment:
+    user_pool_id: { Ref: UserPool }
+    client_id: { Ref: UserClient }
 
 plugins:
   - serverless-plugin-typescript
@@ -20,13 +27,62 @@ functions:
   api:
     handler: index.handler
     events:
-      - httpApi:
+      - http:
           path: /
           method: get
+          cors: true
   bedrock:
     handler: bedrock.handler
     timeout: 20
     events:
-      - httpApi:
+      - http:
           path: /bedrock
           method: get
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - email
+  loginUser:
+    handler: user/login.handler
+    events:
+      - http:
+          path: /login
+          method: post
+          cors: true
+  signupUser:
+    handler: user/signup.handler
+    events:
+      - http:
+          path: /signup
+          method: post
+          cors: true
+resources:
+  Resources:
+    UserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: serverless-auth-pool
+        Schema:
+          - Name: email
+            Required: true
+            Mutable: true
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 6
+        AutoVerifiedAttributes: ["email"]
+
+    UserClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: user-pool-ui
+        GenerateSecret: false
+        UserPoolId: { Ref: UserPool }
+        AccessTokenValidity: 5
+        IdTokenValidity: 5
+        ExplicitAuthFlows:
+          - "ADMIN_NO_SRP_AUTH"
