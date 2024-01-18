@@ -1,0 +1,32 @@
+service: poc-backend
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: eu-central-1
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: "bedrock:InvokeModel"
+          Resource: "*"
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+functions:
+  api:
+    handler: index.handler
+    events:
+      - httpApi:
+          path: /
+          method: get
+  bedrock:
+    handler: bedrock.handler
+    timeout: 20
+    events:
+      - httpApi:
+          path: /bedrock
+          method: get
