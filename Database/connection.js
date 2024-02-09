@@ -1,10 +1,12 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-const dbURI='mongodb+srv://cybersorcerers23:Fir3ball%23@cybersorcerersdb.oletifm.mongodb.net/cybersorcerersDB?retryWrites=true&w=majority';
+
+const dbURI='mongodb+srv://cybersorcerers23:'+process.env.PASSWORD_DB+'@cybersorcerersdb.oletifm.mongodb.net/cybersorcerersDB?retryWrites=true&w=majority';
 const User = require('./schema/user');
 const Project = require('./schema/project');
 const UserProject = require('./schema/user_project');
+
 
 
 /*const run= async()=>{
@@ -66,7 +68,7 @@ async function main(){
     // Salvataggio del progetto nel database
     await projectData.save();*/
     const user = await User.findOne({ name: 'John' });
-    console.log('Il nome è ${user.name} con id ${user._id}');
+    console.log('Il nome è :', user.name, 'L\'id è:', user._id);
         iduser = user._id;
       
       const project = await Project.findOne({ name: 'Project 1' });
