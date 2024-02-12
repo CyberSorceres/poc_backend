@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const epicStorySchema = new mongoose.Schema({
+    title:{
+        type: String,
+        require: true 
+    },
     descript: { 
         type: String,
         require: true 

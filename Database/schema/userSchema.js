@@ -19,7 +19,6 @@ const userSchema = new mongoose.Schema({
         type: String, 
         enum:['project manager', 'sviluppatore', 'cliente'],
         description:'Si inserisca uno dei seguenti ruoli di appartenenza: project manager, sviluppatore o cliente' ,
-        required: true,
         default: 'cliente'
 
     },
@@ -29,7 +28,15 @@ const userSchema = new mongoose.Schema({
         description: 'Deve essere un indirizzo email valido',
         required: true
 
-    }
+    },
+    project:[{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'project'
+    }],
+    userStory:[{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'userStory'
+    }]
 });
 
 const User = mongoose.model('user', userSchema);

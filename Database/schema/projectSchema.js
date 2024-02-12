@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const epicStory=require("./epicStory");
+//const epicStory=require("./epicStorySchema");
 
 const projectSchema = new mongoose.Schema({
     name:{
@@ -28,6 +28,10 @@ const projectSchema = new mongoose.Schema({
     epicStory:[{
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'epicStory'
+    }],
+    user:[{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'user'
     }]
 });
 

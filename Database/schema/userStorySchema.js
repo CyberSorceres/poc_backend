@@ -13,7 +13,11 @@ const userStorySchema = new mongoose.Schema({
     epicStory: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'epicStory' 
-    }
+    },
+    user:[{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'user' 
+    }]
     
 });
 
