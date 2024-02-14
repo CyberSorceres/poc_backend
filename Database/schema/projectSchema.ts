@@ -1,13 +1,21 @@
-const mongoose = require('mongoose');
+import mongoose, { Schema, Document } from 'mongoose';
 //const epicStory=require("./epicStorySchema");
 
-const projectSchema = new mongoose.Schema({
+interface Project extends Document {
+    name: string;
+    validation: boolean;
+    startDate: Date;
+    endDate: Date;
+    epicStory: mongoose.Types.ObjectId[];
+    user: mongoose.Types.ObjectId[];
+}
+
+const projectSchema: Schema<Project> = new Schema({
     name:{
         type: String, 
         description: 'Inserire il nome del progetto',
         required: true
     },
-
     validation:{
         type: Boolean, 
         description: 'Inserire se il progetto è stato validato o no',
@@ -35,7 +43,6 @@ const projectSchema = new mongoose.Schema({
     }]
 });
 
-const Project = mongoose.model('project', projectSchema);
+const ProjectModel = mongoose.model<Project>('project', projectSchema);
 
-module.exports = Project;
-
+export default ProjectModel;

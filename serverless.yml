@@ -19,6 +19,7 @@ provider:
   environment:
     user_pool_id: { Ref: UserPool }
     client_id: { Ref: UserClient }
+    PASSWORD_DB: "Fir3ball%23"
 
 plugins:
   - serverless-plugin-typescript
@@ -32,7 +33,7 @@ functions:
           method: get
           cors: true
   bedrock:
-    handler: bedrock.handler
+    handler: Lambda/bedrock.handler
     timeout: 20
     events:
       - http:
@@ -61,6 +62,27 @@ functions:
           path: /signup
           method: post
           cors: true
+  addProject:
+    handler: Lambda/addProgetto.handler
+    events:
+      - http:
+          path: /addProgetto
+          method: post
+          cors: true
+  addUser:
+    handler: Lambda/addUser.handler
+    events:
+      - http:
+          path: /addUser
+          method: post
+          cors: true
+  delateProject:
+    handler: Lambda/delateProject.handler
+    events:
+      - http:
+          path: /delateProject
+          method: post
+          cors: true
 resources:
   Resources:
     UserPool:
@@ -86,3 +108,4 @@ resources:
         IdTokenValidity: 5
         ExplicitAuthFlows:
           - "ADMIN_NO_SRP_AUTH"
+      

@@ -18,7 +18,7 @@ async function createUser(userData) {
     } catch (error) {
       console.error('Error creating user:', error.message);
     }
-  }
+}
 
   /*Inserimento utenti da terminale, da adattare per il form, problema di connessione
 async function insertNewUser(){

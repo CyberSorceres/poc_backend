@@ -1,11 +1,9 @@
-const mongoose = require("mongoose");
-
-const EpicStory = require('../schema/epicStorySchema');
-const Project = require('./project');
-const UserStory = require("./userStory");
+import mongoose from "mongoose";
+import EpicStory from '../schema/epicStorySchema';
+import Project from './project';
 
 
-async function createEpicStory(epicStoryData) {
+export async function createEpicStory(epicStoryData) {
     try {
       // Crea una nuova istanza del modello Epic Story con i dati forniti
       const newEpicStory = new EpicStory(epicStoryData);
@@ -18,7 +16,7 @@ async function createEpicStory(epicStoryData) {
     } catch (error) {
       console.error('Error creating epic story:', error.message);
     }
-  }
+}
 
   /*Inserimento utenti da terminale, da adattare per il form, problema di connessione
 async function insertNewUser(){
@@ -39,7 +37,7 @@ async function insertNewUser(){
   });
 }*/
 
-function findEpicStoryByID(epicStoryId){
+export function findEpicStoryByID(epicStoryId){
     const epicStory = Project.findById(epicStoryId);
     
     if (!epicStory) {
@@ -50,7 +48,7 @@ function findEpicStoryByID(epicStoryId){
 }
 
 
-async function delateEpicStory(epicStoryId){
+export async function delateEpicStory(epicStoryId){
     try {
         // Trova l'utente con l'ID specificato e elimina il documento
         const result = await EpicStory.deleteOne({ _id: epicStoryId });
@@ -66,13 +64,13 @@ async function delateEpicStory(epicStoryId){
 
 }
 
-async function delateFirstEpicStory(){
+export async function delateFirstEpicStory(){
     const epicStory= await EpicStory.findOne();
     console.log(epicStory._id);
     await delateEpicStory(epicStory._id);
 }
 
-function updateTitleEpicStory(epicStoryId, newTitle){
+export function updateTitleEpicStory(epicStoryId, newTitle){
     EpicStory.updateOne({ _id: epicStoryId }, { title: newTitle}, (err, result) => {
         if (err) {
           console.error('Errore durante la modifica del titolo dell\'epic story:'+this._id, err);
@@ -82,7 +80,7 @@ function updateTitleEpicStory(epicStoryId, newTitle){
       });
 }
 
-function updatedescriptionEpicStory(epicStoryId, newDespription){
+export function updatedescriptionEpicStory(epicStoryId, newDespription){
     EpicStory.updateOne({ _id: epicStoryId }, { descript: newDespription}, (err, result) => {
         if (err) {
           console.error('Errore durante la modifica della descrizione dell\'epic story:'+this._id, err);
@@ -106,7 +104,7 @@ function updatedescriptionEpicStory(epicStoryId, newDespription){
 
 
 
-async function checkIfEpicStoryExists(epicStoryId) {
+export async function checkIfEpicStoryExists(epicStoryId) {
     try {
       // Cerca un progetto con l'ID specificato nel database
       const epicStory = await EpicStory.findById(epicStoryId);
@@ -124,7 +122,7 @@ async function checkIfEpicStoryExists(epicStoryId) {
     }
   }
 
-async function addProjectToEpicStory(epicStoryId, projectId) {
+  export async function addProjectToEpicStory(epicStoryId, projectId) {
       // Trova l'utente con l'ID specificato
       const epicStory = await EpicStory.findById(epicStoryId);
       if (!epicStory) {
@@ -142,7 +140,7 @@ async function addProjectToEpicStory(epicStoryId, projectId) {
       }
   }
 
-  async function delateProjectToEpicStory( epicStoryId, projectId) {
+  export  async function delateProjectToEpicStory( epicStoryId, projectId) {
     try {
         // Trova il progetto con l'ID specificato
         const epicStory = await EpicStory.findById(epicStoryId);
@@ -164,7 +162,7 @@ async function addProjectToEpicStory(epicStoryId, projectId) {
       }
 }
 
-async function addUserStoryToEpicStory(epicStoryId, userStoryId) {
+export async function addUserStoryToEpicStory(epicStoryId, userStoryId) {
     // Trova l'utente con l'ID specificato
     const epicStory = await EpicStory.findById(epicStoryId);
     if (!epicStory) {
@@ -182,7 +180,7 @@ async function addUserStoryToEpicStory(epicStoryId, userStoryId) {
     }
 }
 
-async function delateUserStoryToEpicStory( epicStoryId, userStoryId) {
+export async function delateUserStoryToEpicStory( epicStoryId, userStoryId) {
   try {
       // Trova il progetto con l'ID specificato
       const epicStory = await EpicStory.findById(epicStoryId);
@@ -204,4 +202,3 @@ async function delateUserStoryToEpicStory( epicStoryId, userStoryId) {
     }
 }
 
-module.exports = { createEpicStory, delateEpicStory, delateFirstEpicStory, updateTitleEpicStory, checkIfEpicStoryExists, addProjectToEpicStory, delateProjectToEpicStory, addUserStoryToEpicStory, delateUserStoryToEpicStory };

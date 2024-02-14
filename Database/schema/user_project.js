@@ -1,15 +1,16 @@
 const mongoose = require('mongoose');
-const user= require('./user');
-const project= require('./project');
+
 
 
 const user_projectSchema = new mongoose.Schema({
     user: { 
         type: mongoose.Schema.Types.ObjectId, 
+        required:true,
         ref: 'user' 
     },
     project: { 
         type: mongoose.Schema.Types.ObjectId, 
+        required:true,
         ref: 'project' 
     }
     

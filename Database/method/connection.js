@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const dbURI='mongodb+srv://cybersorcerers23:'+process.env.PASSWORD_DB+'@cybersorcerersdb.oletifm.mongodb.net/cybersorcerersDB?retryWrites=true&w=majority';
 
-function connection(){
+function connect(){
     mongoose.connect(dbURI).then(() => {
       console.log("Connesso");
     }).catch(error => {
@@ -24,4 +24,4 @@ function disconnect(){
     };
 }
 
-module.exports = { connection, disconnect };
+module.exports = { connect, disconnect };
