@@ -560,6 +560,63 @@ export class MongoDB implements Database{
         }
     }
     //Method User story
+
+    async createUserStory(userStoryData) {
+      try {
+        // Crea una nuova istanza del modello Epic Story con i dati forniti
+        const newUserStory = new UserStory(userStoryData);
+        
+        // Salva la nuova epic story nel database
+        await newUserStory.save();
+    
+        console.log('User Story created successfully:', newUserStory);
+          return newUserStory;
+      } catch (error) {
+        console.error('Error creating user story:', error.message);
+      }
+  }
+
+  async addEpicStoryToUserStory(userStoryId, epicStoryId) {
+    try {
+        // Trova l'user story con l'ID specificato
+        const userStory = await UserStory.findByIdAndUpdate(
+            userStoryId,
+            // Aggiorna l'user story inserendo il nuovo progetto
+            { $set: { epicStory: epicStoryId } },
+            // Opzioni per restituire il documento aggiornato
+            //{ new: true }
+        );
+
+        if (!userStory) {
+            console.error('User Story non trovata');
+            return;
+        }
+
+        console.log('Progetto aggiunto con successo all\'epic story:', userStory);
+    } catch (error) {
+        console.error('Errore durante l\'aggiunta del progetto all\'epic story:', error);
+    } 
+}
+
+async addUserToUserStory(userStoryId, userId) {
+  // Trova l'utente con l'ID specificato
+  const userStory = await UserStory.findById(userStoryId);
+  if (!userStory) {
+    console.error('Epic Story non trovata');
+    return;
+  }
+  if( this.checkIfUserExists(userId)){
+    // Aggiungi il progetto all'array dei progetti dell'utente
+    userStory.user.push(userId);
+    //popolate('project').exe() per popolare un progetto ed usare i suoi campi
+    await userStory.save();
+    console.log('User story aggiunto con successo all\'epic story:', userStory);
+  } else{
+    console.error('L\'user story specificato non esiste nel database o si è verificato un errore durante la ricerca.');
+  }
+}
+
+
     checkIfUserStoryExists(userStoryId) {
         try {
           // Cerca un progetto con l'ID specificato nel database
