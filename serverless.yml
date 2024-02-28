@@ -83,6 +83,20 @@ functions:
           path: /delateProject
           method: post
           cors: true
+  getProject:
+    handler: Lambda/getProgetto.handler
+    events:
+      - http:
+          path: /getProject
+          method: get
+          cors: true
+  getProjects:
+    handler: Lambda/getProgetti.handler
+    events:
+      - http:
+          path: /getProjects
+          method: get
+          cors: true
 resources:
   Resources:
     UserPool:
@@ -108,4 +122,3 @@ resources:
         IdTokenValidity: 5
         ExplicitAuthFlows:
           - "ADMIN_NO_SRP_AUTH"
-      

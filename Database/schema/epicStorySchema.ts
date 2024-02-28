@@ -1,35 +1,35 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document } from "mongoose";
 
 interface EpicStory extends Document {
-    title: string;
-    descript: string;
-    project: mongoose.Types.ObjectId;
-    userStory: mongoose.Types.ObjectId[];
+  title: string;
+  descript: string;
+  project: mongoose.Types.ObjectId;
+  userStory: mongoose.Types.ObjectId[];
 }
 
 const epicStorySchema: Schema<EpicStory> = new Schema({
-    title:{
-        type: String,
-        require: true 
-    },
-    descript: { 
-        type: String,
-        require: true 
-    },
+  title: {
+    type: String,
+    require: true,
+  },
+  descript: {
+    type: String,
+    require: true,
+  },
 
-    project: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'project',
-        required: false
+  project: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "project",
+    required: false,
+  },
+  userStory: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "userStory",
     },
-    userStory:[{
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'userStory'
-    }]
-    
+  ],
 });
 
-const EpicStoryModel = mongoose.model<EpicStory>('epicStory', epicStorySchema);
+const EpicStoryModel = mongoose.model<EpicStory>("epicStory", epicStorySchema);
 
 export default EpicStoryModel;
-

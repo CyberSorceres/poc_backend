@@ -1,18 +1,18 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
-const readline = require('readline');
+const readline = require("readline");
 
+const dbURI =
+  "mongodb+srv://cybersorcerers23:" +
+  process.env.PASSWORD_DB +
+  "@cybersorcerersdb.oletifm.mongodb.net/cybersorcerersDB?retryWrites=true&w=majority";
+const User = require("./method/user");
+const Con = require("./method/connection");
+const user = require("./schema/userSchema");
+const project = require("./schema/projectSchema");
 
-const dbURI='mongodb+srv://cybersorcerers23:'+process.env.PASSWORD_DB+'@cybersorcerersdb.oletifm.mongodb.net/cybersorcerersDB?retryWrites=true&w=majority';
-const User = require('./method/user');
-const Con = require('./method/connection');
-const user= require('./schema/userSchema');
-const project= require('./schema/projectSchema');
-
-const Project = require('./schema/projectSchema');
-const UserProject = require('./schema/user_project');
-
-
+const Project = require("./schema/projectSchema");
+const UserProject = require("./schema/user_project");
 
 /*const run= async()=>{
   mongoose.set('strictQuery', true);
@@ -26,16 +26,15 @@ async function createProject(projectData) {
   try {
     // Crea una nuova istanza del modello User con i dati forniti
     const newProject = new Project(projectData);
-    
+
     // Salva il nuovo utente nel database
     await newProject.save();
 
-    console.log('Project created successfully:', newProject);
+    console.log("Project created successfully:", newProject);
   } catch (error) {
-    console.error('Error creating user:', error.message);
+    console.error("Error creating user:", error.message);
   }
 }
-
 
 /* estrapolazione user_id e project_id dal form
 async function assignProject(utente, project){
@@ -59,18 +58,17 @@ async function createUserProject(userprojectData) {
   try {
     // Crea una nuova istanza del modello User con i dati forniti
     const newUserProject = new UserProject(userprojectData);
-    
+
     // Salva il nuovo utente nel database
     await newUserProject.save();
 
-    console.log('UserProject created successfully:', newUserProject);
+    console.log("UserProject created successfully:", newUserProject);
   } catch (error) {
-    console.error('Error creating user:', error.message);
+    console.error("Error creating user:", error.message);
   }
 }
 
-
-async function main(){
+async function main() {
   await Con.connection();
 
   /*const userData = {
@@ -99,9 +97,9 @@ async function main(){
 // Salvataggio della relazione nel database
 await  userProject.save();
 */
- // await insertNewUser();
+  // await insertNewUser();
   //await createUserProject(projectData._id,projectData._id );
-  
+
   /*const story = await Project.
   findOne({ _id: projectData._id  }).
   populate('user').
