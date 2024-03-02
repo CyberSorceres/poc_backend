@@ -4,6 +4,7 @@ import User from "./schema/userSchema";
 import Project from "./schema/projectSchema";
 import EpicStory from "./schema/epicStorySchema";
 import UserStory from "./schema/userStorySchema";
+import { ObjectId } from "mongoose";
 
 export class MongoDB implements Database {
   async connect() {
@@ -132,9 +133,27 @@ export class MongoDB implements Database {
     }
   }
 
-  getProject(projectId) {
+  async getEpicStory(epicStoryId: ObjectId) {
+    const epicStory = await EpicStory.findById(epicStoryId);
+    epicStory.userStory = await Promise.all(
+      epicStory.userStory.map((id) => this.getUserStory(id)),
+    );
+    return epicStory;
+  }
+
+  async getUserStory(userStoryId: ObjectId) {
+    console.log(userStoryId);
+    const userStory = await UserStory.findById(userStoryId);
+    console.log(userStory);
+    return userStory;
+  }
+
+  async getProject(projectId) {
     try {
-      const project = Project.findById(projectId);
+      const project = await Project.findById(projectId);
+      project?.epicStory = await Promise.all(
+        project?.epicStory?.map((id) => this.getEpicStory(id)),
+      );
       return project;
     } catch (error) {
       return null;
