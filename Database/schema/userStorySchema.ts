@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-interface UserStory extends Document {
+export interface UserStory extends Document {
   title: string;
   descript: string;
   state: string;

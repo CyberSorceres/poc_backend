@@ -204,18 +204,7 @@ export class MongoDB implements Database {
     }
   }
 
-  async addEpicStoryToProject(epicStoryData: EpicStory) {
-    // Trova l'utente con l'ID specificato
-    const project = await Project.findById(epicStoryData.project);
-    const epicStory = new EpicStory(epicStoryData);
-    if (!project) {
-      throw new Error("Progetto non trovato");
-    }
-    project.epicStory.push(epicStory._id);
-    await epicStory.save();
-    await project.save();
-    return epicStory;
-  }
+p
 
   async delateEpicStoryToProject(projectId, epicStoryId) {
     try {
@@ -613,28 +602,6 @@ export class MongoDB implements Database {
       );
     }
   }
-  async addUserStoryToEpicStory(epicStoryId, userStoryId) {
-    // Trova l'utente con l'ID specificato
-    const epicStory = await EpicStory.findById(epicStoryId);
-    if (!epicStory) {
-      console.error("Epic Story non trovata");
-      return;
-    }
-    if (this.checkIfUserStoryExists(userStoryId)) {
-      // Aggiungi il progetto all'array dei progetti dell'utente
-      epicStory.userStory.push(userStoryId);
-      //popolate('project').exe() per popolare un progetto ed usare i suoi campi
-      await epicStory.save();
-      console.log(
-        "User story aggiunto con successo all'epic story:",
-        epicStory,
-      );
-    } else {
-      console.error(
-        "L'user story specificato non esiste nel database o si è verificato un errore durante la ricerca.",
-      );
-    }
-  }
 
   async delateUserStoryToEpicStory(epicStoryId, userStoryId) {
     try {
@@ -682,30 +649,18 @@ export class MongoDB implements Database {
     }
   }
 
-  async addEpicStoryToUserStory(userStoryId, epicStoryId) {
-    try {
-      // Trova l'user story con l'ID specificato
-      const userStory = await UserStory.findByIdAndUpdate(
-        userStoryId,
-        // Aggiorna l'user story inserendo il nuovo progetto
-        { $set: { epicStory: epicStoryId } },
-        // Opzioni per restituire il documento aggiornato
-        //{ new: true }
-      );
-
-      if (!userStory) {
-        console.error("User Story non trovata");
-        return;
+  async addUserStoryToEpicStory(userStoryData) {
+      // Trova l'utente con l'ID specificato
+      const epicStory = await EpicStory.findById(userStoryData.epicStory);
+      const userStory = new UserStory(userStoryData);
+      if (!epicStory) {
+        throw new Error("Epic Story non trovato");
       }
-
-      console.log("Progetto aggiunto con successo all'epic story:", userStory);
-    } catch (error) {
-      console.error(
-        "Errore durante l'aggiunta del progetto all'epic story:",
-        error,
-      );
+      epicStory.userStory.push(userStory._id);
+      await epicStory.save();
+      await userStory.save();
+      return userStory;
     }
-  }
 
   async addUserToUserStory(userStoryId, userId) {
     // Trova l'utente con l'ID specificato

@@ -75,6 +75,13 @@ functions:
           path: /addEpicStory
           method: post
           cors: true
+  addUserStory:
+    handler: Lambda/addUserStory.handler
+    events:
+      - http:
+          path: /addUserStory
+          method: post
+          cors: true
   delateProject:
     handler: Lambda/delateProject.handler
     events:
