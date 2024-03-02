@@ -44,8 +44,6 @@ export class MongoDB implements Database {
 
       // Salva il nuovo utente nel database
       await newProject.save();
-
-      console.log("Progect created successfully:", newProject);
       return newProject;
     } catch (error) {
       console.error("Error creating project:", error.message);
@@ -74,14 +72,6 @@ export class MongoDB implements Database {
       }
     } catch (error) {
       console.error("Errore durante la cancellazione del progetto:", error);
-    }
-  }
-
-  async delateFirstProject() {
-    const project = await Project.findOne();
-    if (project) {
-      console.log(project._id);
-      await this.delateProject(project._id);
     }
   }
 
@@ -214,24 +204,17 @@ export class MongoDB implements Database {
     }
   }
 
-  async addEpicStoryToProject(projectId, epicStoryId) {
+  async addEpicStoryToProject(epicStoryData: EpicStory) {
     // Trova l'utente con l'ID specificato
-    const project = await Project.findById(projectId);
+    const project = await Project.findById(epicStoryData.project);
+    const epicStory = new EpicStory(epicStoryData);
     if (!project) {
-      console.error("Progetto non trovato");
-      return;
+      throw new Error("Progetto non trovato");
     }
-    if (this.checkIfEpicStoryExists(epicStoryId)) {
-      // Aggiungi il progetto all'array dei progetti dell'utente
-      project.epicStory.push(epicStoryId);
-      //popolate('project').exe() per popolare un progetto ed usare i suoi campi
-      await project.save();
-      console.log("Epic story aggiunto con successo al progetto:", project);
-    } else {
-      console.error(
-        "L'epic story specificato non esiste nel database o si è verificato un errore durante la ricerca.",
-      );
-    }
+    project.epicStory.push(epicStory._id);
+    await epicStory.save();
+    await project.save();
+    return epicStory;
   }
 
   async delateEpicStoryToProject(projectId, epicStoryId) {

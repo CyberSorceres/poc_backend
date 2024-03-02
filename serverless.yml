@@ -39,15 +39,7 @@ functions:
       - http:
           path: /bedrock
           method: get
-          authorizer:
-            name: PrivateAuthorizer
-            type: COGNITO_USER_POOLS
-            arn:
-              Fn::GetAtt:
-                - UserPool
-                - Arn
-            claims:
-              - email
+
   loginUser:
     handler: user/login.handler
     events:
@@ -74,6 +66,13 @@ functions:
     events:
       - http:
           path: /addUser
+          method: post
+          cors: true
+  addEpicStory:
+    handler: Lambda/addEpicStory.handler
+    events:
+      - http:
+          path: /addEpicStory
           method: post
           cors: true
   delateProject:

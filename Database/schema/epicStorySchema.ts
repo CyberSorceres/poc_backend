@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-interface EpicStory extends Document {
+export interface EpicStory extends Document {
   title: string;
   descript: string;
   project: mongoose.Types.ObjectId;
