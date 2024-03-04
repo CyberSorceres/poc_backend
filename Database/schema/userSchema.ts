@@ -24,10 +24,10 @@ const userSchema: Schema<User> = new Schema({
   },
   role: {
     type: String,
-    enum: ["project manager", "sviluppatore", "cliente"],
+    enum: ["pm", "dev", "user"],
     description:
       "Si inserisca uno dei seguenti ruoli di appartenenza: project manager, sviluppatore o cliente",
-    default: "cliente",
+    default: "user",
   },
   mail: {
     type: String,

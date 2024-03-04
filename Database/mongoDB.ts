@@ -132,10 +132,15 @@ export class MongoDB implements Database {
   }
 
   async getUserStory(userStoryId: ObjectId) {
-    console.log(userStoryId);
     const userStory = await UserStory.findById(userStoryId);
-    console.log(userStory);
+    userStory.user = await Promise.all(
+      userStory.user.map((id) => this.getUser(id)),
+    );
     return userStory;
+  }
+
+  async getUser(userId: ObjectId) {
+    return await User.findById(userId);
   }
 
   async getProject(projectId) {
@@ -143,6 +148,9 @@ export class MongoDB implements Database {
       const project = await Project.findById(projectId);
       project?.epicStory = await Promise.all(
         project?.epicStory?.map((id) => this.getEpicStory(id)),
+      );
+      project?.user = await Promise.all(
+        project?.user?.map((id) => this.getUser(id)),
       );
       return project;
     } catch (error) {
@@ -691,6 +699,14 @@ export class MongoDB implements Database {
     userStory.feedback.push({ text, user });
     await userStory.save();
     return userStory;
+  }
+
+  async setState(state: string, userStoryId: string) {
+    return await UserStory.updateOne({ _id: userStoryId }, { state });
+  }
+
+  async setDev(devId: string, userStoryId: string) {
+    return await UserStory.updateOne({ _id: userStoryId }, { user: devId });
   }
 
   checkIfUserStoryExists(userStoryId) {

@@ -110,6 +110,21 @@ functions:
           path: /addFeedback
           method: post
           cors: true
+
+  setState:
+    handler: Lambda/setState.handler
+    events:
+      - http:
+          path: /setState
+          method: post
+          cors: true
+  setDev:
+    handler: Lambda/setDev.handler
+    events:
+      - http:
+          path: /setDev
+          method: post
+          cors: true
 resources:
   Resources:
     UserPool:
