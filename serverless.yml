@@ -103,6 +103,13 @@ functions:
           path: /getProjects
           method: get
           cors: true
+  addFeedback:
+    handler: Lambda/addFeedback.handler
+    events:
+      - http:
+          path: /addFeedback
+          method: post
+          cors: true
 resources:
   Resources:
     UserPool:

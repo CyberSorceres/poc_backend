@@ -32,6 +32,12 @@ const userStorySchema: Schema<UserStory> = new Schema({
       ref: "user",
     },
   ],
+  feedback: [
+    {
+      text: String,
+      user: mongoose.Schema.Types.ObjectId,
+    },
+  ],
 });
 
 const UserStoryModel = mongoose.model<UserStory>("userStory", userStorySchema);

@@ -204,8 +204,6 @@ export class MongoDB implements Database {
     }
   }
 
-p
-
   async delateEpicStoryToProject(projectId, epicStoryId) {
     try {
       // Trova il progetto con l'ID specificato
@@ -650,17 +648,17 @@ p
   }
 
   async addUserStoryToEpicStory(userStoryData) {
-      // Trova l'utente con l'ID specificato
-      const epicStory = await EpicStory.findById(userStoryData.epicStory);
-      const userStory = new UserStory(userStoryData);
-      if (!epicStory) {
-        throw new Error("Epic Story non trovato");
-      }
-      epicStory.userStory.push(userStory._id);
-      await epicStory.save();
-      await userStory.save();
-      return userStory;
+    // Trova l'utente con l'ID specificato
+    const epicStory = await EpicStory.findById(userStoryData.epicStory);
+    const userStory = new UserStory(userStoryData);
+    if (!epicStory) {
+      throw new Error("Epic Story non trovato");
     }
+    epicStory.userStory.push(userStory._id);
+    await epicStory.save();
+    await userStory.save();
+    return userStory;
+  }
 
   async addUserToUserStory(userStoryId, userId) {
     // Trova l'utente con l'ID specificato
@@ -683,6 +681,16 @@ p
         "L'user story specificato non esiste nel database o si è verificato un errore durante la ricerca.",
       );
     }
+  }
+
+  async addFeedback(text: string, user: string, userStoryId: string) {
+    const userStory = await UserStory.findById(userStoryId);
+    if (!userStory) {
+      throw new Error("invalid user story");
+    }
+    userStory.feedback.push({ text, user });
+    await userStory.save();
+    return userStory;
   }
 
   checkIfUserStoryExists(userStoryId) {
