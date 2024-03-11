@@ -1,11 +1,11 @@
 import { MongoDB } from "../Database/mongoDB";
-import { EpicStory } from "../Database/schema/epicStorySchema.ts";
+import { EpicStory } from "../Database/schema/epicStorySchema";
 
 export const handler = async (event) => {
   const db = new MongoDB();
   await db.connect();
   const epicStoryData = JSON.parse(event.body) as { epicStoryData: EpicStory };
-  const epicStory = await db.addEpicStoryToProject(epicStoryData);
+  const epicStory = await db.createEpicStory(epicStoryData);
   db.disconnect();
   return {
     statusCode: 200,
@@ -13,6 +13,6 @@ export const handler = async (event) => {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Credentials": true,
     },
-    body: epicStory._id,
+    body: epicStory?._id,
   };
 };

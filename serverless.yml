@@ -82,13 +82,6 @@ functions:
           path: /addUserStory
           method: post
           cors: true
-  delateProject:
-    handler: Lambda/delateProject.handler
-    events:
-      - http:
-          path: /delateProject
-          method: post
-          cors: true
   getProject:
     handler: Lambda/getProgetto.handler
     events:

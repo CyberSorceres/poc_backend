@@ -8,7 +8,7 @@ export const handler = async (event) => {
   db.disconnect();
   return {
     statusCode: 200,
-    body: project._id,
+    body: project?._id,
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Credentials": true,
