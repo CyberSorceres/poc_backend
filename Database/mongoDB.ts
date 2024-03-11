@@ -126,7 +126,7 @@ export class MongoDB implements Database {
   async getEpicStory(epicStoryId: ObjectId) {
     const epicStory = await EpicStory.findById(epicStoryId);
     epicStory.userStory = await Promise.all(
-      epicStory.userStory.map((id) => this.getUserStory(id)),
+      epicStory.userStory?.map((id) => this.getUserStory(id)),
     );
     return epicStory;
   }
@@ -154,6 +154,7 @@ export class MongoDB implements Database {
       );
       return project;
     } catch (error) {
+      console.error(error);
       return null;
     }
   }
@@ -655,6 +656,19 @@ export class MongoDB implements Database {
     }
   }
 
+  async addEpicStoryToProject(epicStoryData) {
+    // Trova l'utente con l'ID specificato
+    const project = await Project.findById(epicStoryData.project);
+    const epicStory = new EpicStory(epicStoryData);
+    if (!project) {
+      throw new Error("Project non trovato");
+    }
+    project.epicStory.push(epicStory._id);
+    await epicStory.save();
+    await project.save();
+    return epicStory;
+  }
+
   async addUserStoryToEpicStory(userStoryData) {
     // Trova l'utente con l'ID specificato
     const epicStory = await EpicStory.findById(userStoryData.epicStory);
@@ -705,10 +719,23 @@ export class MongoDB implements Database {
     return await UserStory.updateOne({ _id: userStoryId }, { state });
   }
 
-  async setDev(devId: string, userStoryId: string) {
-    return await UserStory.updateOne({ _id: userStoryId }, { user: devId });
+  async addDev(devId: string, userStoryId: string) {
+    return await UserStory.updateOne(
+      { _id: userStoryId },
+      {
+        $push: { user: devId },
+      },
+    );
   }
 
+  async removeDev(devId: string, userStoryId: string) {
+    return await UserStory.updateOne(
+      { _id: userStoryId },
+      {
+        $pull: { user: devId },
+      },
+    );
+  }
   checkIfUserStoryExists(userStoryId) {
     try {
       // Cerca un progetto con l'ID specificato nel database
