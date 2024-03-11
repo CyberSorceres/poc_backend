@@ -60,7 +60,7 @@ export class MongoDB implements Database {
     return project;
   }
 
-  async delateProject(projectId) {
+  async deleteProject(projectId) {
     try {
       // Trova l'utente con l'ID specificato e elimina il documento
       const result = await Project.deleteOne({ _id: projectId });
@@ -188,7 +188,7 @@ export class MongoDB implements Database {
     }
   }
 
-  async delateUserToProject(projectId, userId) {
+  async deleteUserToProject(projectId, userId) {
     try {
       // Trova il progetto con l'ID specificato
       const project = await Project.findById(projectId);
@@ -213,7 +213,7 @@ export class MongoDB implements Database {
     }
   }
 
-  async delateEpicStoryToProject(projectId, epicStoryId) {
+  async deleteEpicStoryToProject(projectId, epicStoryId) {
     try {
       // Trova il progetto con l'ID specificato
       const project = await Project.findById(projectId);
@@ -269,7 +269,7 @@ export class MongoDB implements Database {
     return user;
   }
 
-  async delateUser(idUser) {
+  async deleteUser(idUser) {
     try {
       // Trova l'utente con l'ID specificato e elimina il documento
       const result = await User.deleteOne({ _id: idUser });
@@ -284,11 +284,11 @@ export class MongoDB implements Database {
     }
   }
 
-  async delateFirstUser() {
+  async deleteFirstUser() {
     const utente = await User.findOne();
     if (utente) {
       console.log(utente._id);
-      await this.delateUser(utente._id);
+      await this.deleteUser(utente._id);
     }
   }
 
@@ -411,7 +411,7 @@ export class MongoDB implements Database {
     }
   }
 
-  async delateProjectToUser(userId, projectId) {
+  async deleteProjectToUser(userId, projectId) {
     try {
       // Trova l'utente con l'ID specificato
       const user = await User.findById(userId);
@@ -438,7 +438,7 @@ export class MongoDB implements Database {
     }
   }
 
-  async delateUserStoryToUser(userId, userStoryId) {
+  async deleteUserStoryToUser(userId, userStoryId) {
     try {
       // Trova l'utente con l'ID specificato
       const user = await User.findById(userId);
@@ -491,7 +491,7 @@ export class MongoDB implements Database {
     return epicStory;
   }
 
-  async delateEpicStory(epicStoryId) {
+  async deleteEpicStory(epicStoryId) {
     try {
       // Trova l'utente con l'ID specificato e elimina il documento
       const result = await EpicStory.deleteOne({ _id: epicStoryId });
@@ -506,11 +506,11 @@ export class MongoDB implements Database {
     }
   }
 
-  async delateFirstEpicStory() {
+  async deleteFirstEpicStory() {
     const epicStory = await EpicStory.findOne();
     if (epicStory) {
       console.log(epicStory._id);
-      await this.delateEpicStory(epicStory._id);
+      await this.deleteEpicStory(epicStory._id);
     }
   }
 
@@ -590,7 +590,7 @@ export class MongoDB implements Database {
       );
     }
   }
-  async delateProjectToEpicStory(epicStoryId) {
+  async deleteProjectToEpicStory(epicStoryId) {
     try {
       // Trova il progetto con l'ID specificato
       const epicStory = await EpicStory.findByIdAndUpdate(
@@ -610,7 +610,7 @@ export class MongoDB implements Database {
     }
   }
 
-  async delateUserStoryToEpicStory(epicStoryId, userStoryId) {
+  async deleteUserStoryToEpicStory(epicStoryId, userStoryId) {
     try {
       // Trova il progetto con l'ID specificato
       const epicStory = await EpicStory.findById(epicStoryId);
