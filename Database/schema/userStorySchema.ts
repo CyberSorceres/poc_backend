@@ -5,8 +5,8 @@ export interface UserStory extends Document {
   descript: string;
   state: string;
   epicStory: mongoose.Types.ObjectId;
-    user: mongoose.Types.ObjectId[];
-    feedback: {text: string, user: mongoose.Schema.Types.ObjectId}[]
+  user: mongoose.Types.ObjectId[];
+  feedback: { text: string; user: mongoose.Schema.Types.ObjectId }[];
 }
 const userStorySchema: Schema<UserStory> = new Schema({
   title: {

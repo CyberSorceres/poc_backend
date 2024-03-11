@@ -40,7 +40,7 @@ export class MongoDB implements Database {
     }
   }
 
-    async findProjectByID(projectId: ObjectId) {
+  async findProjectByID(projectId: ObjectId) {
     const project = await Project.findById(projectId);
 
     if (!project) {
@@ -50,7 +50,7 @@ export class MongoDB implements Database {
     return project;
   }
 
-    async deleteProject(projectId: ObjectId) {
+  async deleteProject(projectId: ObjectId) {
     try {
       // Trova l'utente con l'ID specificato e elimina il documento
       return await Project.deleteOne({ _id: projectId });
@@ -86,20 +86,20 @@ export class MongoDB implements Database {
   }
 
   async getEpicStory(epicStoryId: ObjectId) {
-      const epicStory = await EpicStory.findById(epicStoryId);
+    const epicStory = await EpicStory.findById(epicStoryId);
+    // @ts-ignore
+    epicStory.userStory = await Promise.all(
       // @ts-ignore
-      epicStory.userStory = await Promise.all(
-	        // @ts-ignore
       epicStory.userStory?.map((id) => this.getUserStory(id)),
     );
     return epicStory;
   }
 
   async getUserStory(userStoryId: ObjectId) {
-      const userStory = await UserStory.findById(userStoryId);
+    const userStory = await UserStory.findById(userStoryId);
+    // @ts-ignore
+    userStory.user = await Promise.all(
       // @ts-ignore
-      userStory.user = await Promise.all(
-	        // @ts-ignore
       userStory.user.map((id) => this.getUser(id)),
     );
     return userStory;
@@ -111,15 +111,13 @@ export class MongoDB implements Database {
 
   async getProject(projectId: ObjectId) {
     try {
-	const project = await Project.findById(projectId);
-	      // @ts-ignore
-	project?.epicStory = await Promise.all(
-	          // @ts-ignore
+      const project = await Project.findById(projectId);
+      project.epicStory = (await Promise.all(
         project?.epicStory?.map((id) => this.getEpicStory(id)),
-      );
-	      // @ts-ignore
-	project?.user = await Promise.all(
-	          // @ts-ignore
+      )) as any;
+      // @ts-ignore
+      project.user = await Promise.all(
+        // @ts-ignore
         project?.user?.map((id) => this.getUser(id)),
       );
       return project;
@@ -146,7 +144,7 @@ export class MongoDB implements Database {
       return null;
     }
     if (await this.checkIfUserExists(userId)) {
-	// Aggiungi il progetto all'array dei progetti dell'utente
+      // Aggiungi il progetto all'array dei progetti dell'utente
       project.user.push(userId);
       return await project.save();
     } else {
@@ -165,7 +163,9 @@ export class MongoDB implements Database {
       }
 
       // Rimuovi l'utente dall'array degli utente del progetto
-	project.user = project.user.filter((user) => user.toString() !== userId.toString());
+      project.user = project.user.filter(
+        (user) => user.toString() !== userId.toString(),
+      );
 
       // Salva le modifiche
       await project.save();
@@ -208,7 +208,7 @@ export class MongoDB implements Database {
     try {
       return await User.deleteOne({ _id: idUser });
     } catch (error) {
-	console.error(error);
+      console.error(error);
     }
   }
 
@@ -267,7 +267,7 @@ export class MongoDB implements Database {
     if (!userStory) {
       throw new Error("invalid user story");
     }
-      // @ts-ignore
+    // @ts-ignore
     userStory.feedback.push({ text, user });
     await userStory.save();
     return userStory;
