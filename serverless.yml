@@ -103,6 +103,20 @@ functions:
           path: /getProjects
           method: get
           cors: true
+  getEpicStory:
+    handler: Lambda/getEpicStory.handler
+    events:
+      - http:
+          path: /getEpicStory
+          method: get
+          cors: true
+  getUserStory:
+    handler: Lambda/getUserStory.handler
+    events:
+      - http:
+          path: /getUserStory
+          method: get
+          cors: true
   addFeedback:
     handler: Lambda/addFeedback.handler
     events:
@@ -118,11 +132,18 @@ functions:
           path: /setState
           method: post
           cors: true
-  setDev:
-    handler: Lambda/setDev.handler
+  addDev:
+    handler: Lambda/addDev.handler
     events:
       - http:
-          path: /setDev
+          path: /addDev
+          method: post
+          cors: true
+  removeDev:
+    handler: Lambda/removeDev.handler
+    events:
+      - http:
+          path: /removeDev
           method: post
           cors: true
 resources:

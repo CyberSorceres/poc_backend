@@ -41,6 +41,10 @@ export const handler = async (event) => {
     return {
       statusCode: 200,
       body: text,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true,
+      },
     };
   } catch (e) {
     return { statusCode: 502, body: JSON.stringify(e) };
