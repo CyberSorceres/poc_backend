@@ -227,6 +227,10 @@ export class MongoDB implements Database {
     try {
       // Crea una nuova istanza del modello Epic Story con i dati forniti
       const newEpicStory = new EpicStory(epicStoryData);
+      const project = await Project.findById(newEpicStory.project);
+      if (!project) throw new Error("Invalid project");
+      project.epicStory.push(newEpicStory._id);
+      await project.save();
 
       // Salva la nuova epic story nel database
       await newEpicStory.save();
@@ -251,11 +255,14 @@ export class MongoDB implements Database {
     try {
       // Crea una nuova istanza del modello Epic Story con i dati forniti
       const newUserStory = new UserStory(userStoryData);
+      const epicStory = await EpicStory.findById(newUserStory.epicStory);
+      if (!epicStory) throw new Error("Invalid project");
+      epicStory.userStory.push(newUserStory._id);
+      await epicStory.save();
 
       // Salva la nuova epic story nel database
       await newUserStory.save();
 
-      console.log("User Story created successfully:", newUserStory);
       return newUserStory;
     } catch (error) {
       console.error("Error creating user story:", error.message);
